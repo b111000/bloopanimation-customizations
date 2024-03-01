@@ -10,55 +10,6 @@
  */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-// add_filter( 'mepr_transaction_product', 'bloopanimation_set_membership_price', 900, 1 );
-// function bloopanimation_set_membership_price( $product_obj ) {
-//     // print "<pre>";
-// 	// print_r( $product_obj );
-// 	// print "</pre>";
-// 	$product_obj->price = 18.990;
-// 	return $product_obj;
-// }
-
-// add_filter( 'mepr_display_invoice_txn', 'bloopanimation_display_invoice_txn', 900, 1 );
-// function bloopanimation_display_invoice_txn( $tmp_txn ) {
-// 	$tmp_txn->amount = 19.990;
-// 	$tmp_txn->total  = 23.990;
-
-//     // print "<pre>";
-// 	// print_r( $tmp_txn );
-// 	// print "</pre>";
-
-// 	return $tmp_txn;
-// }
-
-
-return;
-
-add_filter( 'mepr-price-string', 'bloopanimation_display_invoice_txn', 900, 3 );
-function bloopanimation_display_invoice_txn( $price_str, $obj, $show_symbol ) {
-	if ( !isset( $_GET['coupon'] ) ) {
-		return $price_str;
-	}
-	if ( $_GET['coupon'] != 'Upgrade-Discount' ) {
-		return $price_str;
-	}
-	$product   = new MeprProduct( $obj->product_id );
-	$price_str = '$'.$product->price;
-	return $price_str;
-}
-
-
-add_filter( 'gettext_memberpress', 'bloopanimation_change_checkout_labels', 900, 3 );
-function bloopanimation_change_checkout_labels( $translation, $text, $domain ) {
-	if ( $translation == "Using Coupon &ndash; %s" ) {
-		$translation = 'Upgrade Discount';
-	}elseif( $translation == "Coupon Code '%s'" ){
-		$translation = 'Upgrade Discount';
-	}
-	return $translation;
-}
-
-
 /**
  * Retrieves the total amount spent by a user based on their previous purchases.
  *
@@ -120,4 +71,74 @@ function bloopanimation_set_memberpress_coupon_amount( $discount_amount, $obj, $
 	$discount_amount = bloopanimation_get_revious_purchases_value( $user_id );
 
 	return $discount_amount;
+}
+
+/**
+ * Modify the display of membership price string with a coupon.
+ *
+ * This function is hooked into the 'mepr-price-string' filter of the MemberPress plugin
+ * and is responsible for changing the displayed text when a specific coupon is applied.
+ *
+ * @param string $price_str The original price string.
+ * @param object $obj The MeprProduct object representing the product.
+ * @param bool $show_symbol Flag indicating whether to show the currency symbol.
+ * @return string The modified price string.
+ */
+add_filter( 'mepr-price-string', 'bloopanimation_change_with_coupon_text', 900, 3 );
+function bloopanimation_change_with_coupon_text( $price_str, $obj, $show_symbol ) {
+	if ( !is_user_logged_in() ) {
+		return $price_str;
+	}
+
+	if ( is_admin() ) {
+		return $price_str;
+	}
+
+	if ( !isset( $_GET['coupon'] ) ) {
+		return $price_str;
+	}
+
+	if ( $_GET['coupon'] != 'Upgrade-Discount' ) {
+		return $price_str;
+	}
+
+	$product   = new MeprProduct( $obj->product_id );
+	$price_str = '$'.$product->price;
+
+	return $price_str;
+}
+
+
+/**
+ * Modify the translated coupon code text in MemberPress.
+ *
+ * This function is hooked into the 'gettext_memberpress' filter of the MemberPress plugin
+ * and is responsible for changing the displayed coupon code text when a specific coupon is applied.
+ *
+ * @param string $translation The original translated text.
+ * @param string $text The original text before translation.
+ * @param string $domain The text domain.
+ * @return string The modified translated text.
+ */
+add_filter( 'gettext_memberpress', 'bloopanimation_change_coupon_code_text', 900, 3 );
+function bloopanimation_change_coupon_code_text( $translation, $text, $domain ) {
+
+	if ( is_admin() ) {
+		return $translation;
+	}
+
+	if ( !isset( $_GET['coupon'] ) ) {
+		return $translation;
+	}
+
+	if ( $_GET['coupon'] != 'Upgrade-Discount' ) {
+		return $translation;
+	}
+
+	if ( $translation == "Using Coupon &ndash; %s" ) {
+		$translation = 'Upgrade Discount';
+	}elseif( $translation == "Coupon Code '%s'" ){
+		$translation = 'Upgrade Discount';
+	}
+	return $translation;
 }
