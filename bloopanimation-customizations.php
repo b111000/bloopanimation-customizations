@@ -176,3 +176,33 @@ function bloopanimation_header_css_styles() {
 	</style>
 	<?php
 }
+
+/**
+ * Filter callback to modify the 'mepr-invoice' data.
+ *
+ * This function is hooked to the 'mepr-invoice' filter and is used to remove the
+ * " – Payment" suffix from the 'description' field of each item in the 'items' array.
+ *
+ * @param array $invoice The original invoice data.
+ * @param object $txn The transaction object.
+ * @return array Modified invoice data with 'description' field in 'items' array updated.
+ */
+add_filter('mepr-invoice', 'bloopanimation_remove_payment_txt_from_item', 900, 2 );
+function bloopanimation_remove_payment_txt_from_item( $invoice, $txn ) {
+	
+	if ( is_admin() ) {
+		return;
+	}
+
+    // Check if 'items' array exists in the $invoice
+    if (isset($invoice['items']) && is_array($invoice['items'])) {
+        // Loop through each item and modify the 'description' field
+        foreach ($invoice['items'] as &$item) {
+            if (isset($item['description'])) {
+                $item['description'] = str_replace('&nbsp;&ndash;&nbsp;Payment', '', $item['description']);
+            }
+        }
+    }
+    return $invoice;
+}
+
