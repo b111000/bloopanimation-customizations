@@ -191,7 +191,7 @@ add_filter('mepr-invoice', 'bloopanimation_remove_payment_txt_from_item', 900, 2
 function bloopanimation_remove_payment_txt_from_item( $invoice, $txn ) {
 	
 	if ( is_admin() ) {
-		return;
+		return $invoice;
 	}
 
     // Check if 'items' array exists in the $invoice
