@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * @param int $user_id The ID of the user for whom the total spent is to be retrieved.
  * @return float The total amount spent by the user. Returns 0 if no value is found.
  */
-function bloopanimation_get_revious_purchases_value( $user_id ) {
+function bloopanimation_get_previous_purchases_value( $user_id ) {
 
     global $wpdb;
 
@@ -47,7 +47,7 @@ function bloopanimation_set_memberpress_coupon() {
 	}
 
 	$user_id         = get_current_user_id();
-	$discount_amount = bloopanimation_get_revious_purchases_value( $user_id );
+	$discount_amount = bloopanimation_get_previous_purchases_value( $user_id );
 
 	if ( empty( $discount_amount ) || $discount_amount == 0 ) {
 		return;
@@ -68,7 +68,7 @@ function bloopanimation_set_memberpress_coupon_amount( $discount_amount, $obj, $
 	}
 
 	$user_id         = get_current_user_id();
-	$discount_amount = bloopanimation_get_revious_purchases_value( $user_id );
+	$discount_amount = bloopanimation_get_previous_purchases_value( $user_id );
 
 	return $discount_amount;
 }
@@ -151,6 +151,23 @@ function bloopanimation_change_coupon_code_text( $translation, $text, $domain ) 
  */
 add_action( 'wp_head', 'bloopanimation_header_css_styles' );
 function bloopanimation_header_css_styles() {
+
+	if ( !is_user_logged_in() ) {
+		return;
+	}
+
+	if ( is_admin() ) {
+		return;
+	}
+
+	if ( !isset( $_GET['coupon'] ) ) {
+		return;
+	}
+
+	if ( $_GET['coupon'] != 'Upgrade-Discount' ) {
+		return;
+	}
+
 	?>
 	<style type="text/css">
 		.mepr-checkout-container.mp_wrapper .mp-table tr td .desc {
