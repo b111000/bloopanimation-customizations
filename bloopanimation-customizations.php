@@ -102,8 +102,7 @@ function bloopanimation_change_with_coupon_text( $price_str, $obj, $show_symbol 
 		return $price_str;
 	}
 
-	$product   = new MeprProduct( $obj->product_id );
-	$price_str = '$'.$product->price;
+	$price_str = '$'.$obj->total;
 
 	return $price_str;
 }
@@ -141,4 +140,22 @@ function bloopanimation_change_coupon_code_text( $translation, $text, $domain ) 
 		$translation = 'Upgrade Discount';
 	}
 	return $translation;
+}
+
+/**
+ * Enqueue custom CSS styles in the <head> section of the WordPress website.
+ *
+ * This function is hooked to the 'wp_head' action to add custom CSS styles
+ *
+ * @return void
+ */
+add_action( 'wp_head', 'bloopanimation_header_css_styles' );
+function bloopanimation_header_css_styles() {
+	?>
+	<style type="text/css">
+		.mepr-checkout-container.mp_wrapper .mp-table tr td .desc {
+			display: none;
+		}
+	</style>
+	<?php
 }
