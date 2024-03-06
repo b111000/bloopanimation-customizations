@@ -1,0 +1,35 @@
+.mp-table .bloopanimation-logo-n-text {
+	display: none;
+}
+.mepr-checkout-container .invoice-heading {
+	display: none;
+}
+body .mepr-checkout-container .invoice-wrapper .invoice-amount {
+	font-size: inherit;
+}
+body .mepr-checkout-container .invoice-wrapper table .bt {
+    font-weight: bold;
+    color: #000;
+}
+body .mepr-checkout-container .invoice-wrapper .mepr_price {
+	margin-bottom: 0;
+}
+.bloopanimation-logo-n-text img {
+	max-width: 100px;
+}
+.single-memberpressproduct .site-branding__logo {
+	display: none;
+}
+.mepr-checkout-container .mepr-product-rows {
+	display: flex;
+    flex-direction: column;
+}
+.mepr-transaction-invoice-wrapper {
+	order: 1;
+}
+.mp-form-row.mepr_coupon {
+	order: 2;
+}
+.have-coupon-link {
+	order: 3;
+}

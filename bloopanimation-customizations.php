@@ -11,6 +11,15 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 /**
+ * Classes
+ */
+include( plugin_dir_path( __FILE__ ) . 'classes/memberpress/checkout.php' );
+include( plugin_dir_path( __FILE__ ) . 'classes/memberpress/meta-fields.php' );
+include( plugin_dir_path( __FILE__ ) . 'classes/assets/assets.php' );
+
+
+
+/**
  * Retrieves the total amount spent by a user based on their previous purchases.
  *
  * @param int $user_id The ID of the user for whom the total spent is to be retrieved.
@@ -72,41 +81,6 @@ function bloopanimation_set_memberpress_coupon_amount( $discount_amount, $obj, $
 
 	return $discount_amount;
 }
-
-/**
- * Modify the display of membership price string with a coupon.
- *
- * This function is hooked into the 'mepr-price-string' filter of the MemberPress plugin
- * and is responsible for changing the displayed text when a specific coupon is applied.
- *
- * @param string $price_str The original price string.
- * @param object $obj The MeprProduct object representing the product.
- * @param bool $show_symbol Flag indicating whether to show the currency symbol.
- * @return string The modified price string.
- */
-add_filter( 'mepr-price-string', 'bloopanimation_change_with_coupon_text', 900, 3 );
-function bloopanimation_change_with_coupon_text( $price_str, $obj, $show_symbol ) {
-	if ( !is_user_logged_in() ) {
-		return $price_str;
-	}
-
-	if ( is_admin() ) {
-		return $price_str;
-	}
-
-	if ( !isset( $_GET['coupon'] ) ) {
-		return $price_str;
-	}
-
-	if ( $_GET['coupon'] != 'Upgrade-Discount' ) {
-		return $price_str;
-	}
-
-	$price_str = '$'.$obj->total;
-
-	return $price_str;
-}
-
 
 /**
  * Modify the translated coupon code text in MemberPress.
