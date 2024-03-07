@@ -62,10 +62,12 @@ class BACU_BloopAnimation_Customizations_Memberpress_Checkout {
         ob_start();
         ?>
         <span class="bloopanimation-logo-n-text">
-            <img src="<?php echo esc_url( plugins_url( 'assets/images/bloopAnimation_logo.png', dirname(__DIR__) ) ); ?>" alt="logo">
+            <a href="<?php echo esc_url( home_url('/') ); ?>">
+                <img src="<?php echo esc_url( plugins_url( 'assets/images/bloopAnimation_logo.png', dirname(__DIR__) ) ); ?>" alt="logo">
+            </a>
             <?php if ( !empty( $checkout_txt ) ): ?>
                 <span>
-                    <?php echo esc_html( $checkout_txt ); ?>
+                    <?php echo wp_kses_post( $checkout_txt ); ?>
                 </span>
             <?php endif ?>
         </span>
@@ -235,7 +237,7 @@ class BACU_BloopAnimation_Customizations_Memberpress_Checkout {
 
         ?>
         <style type="text/css">
-            <?php if ( $post_title == 'All-Access Pass' && empty( bloopanimation_get_previous_purchases_value( $user_id ) ) ): ?>
+            <?php if ( $post_title == 'All-Access Pass' ): ?>
                 .mepr-checkout-container .have-coupon-link {
                     display: none;
                 }

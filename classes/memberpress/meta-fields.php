@@ -16,7 +16,7 @@ class BACU_BloopAnimation_Customizations_Memberpress_Meta_Fields {
     function add_metabox() {
         add_meta_box(
             'bloopanimation-memberpressproduct-checkout-page',
-            __( 'Checkout Page', 'bloopanimation' ),
+            __( 'Checkout Details', 'bloopanimation' ),
             array( $this, 'metabox_html'),
             ['memberpressproduct'],
             'normal',
@@ -33,19 +33,23 @@ class BACU_BloopAnimation_Customizations_Memberpress_Meta_Fields {
         $post_id      = get_the_ID();
         $checkout_txt = get_post_meta( $post_id, 'bloopanimation-mepr-checkout-txt', true );
 
+        wp_editor( $checkout_txt, 'bloopanimation-mepr-checkout-txt', array(
+            'media_buttons' => false,
+            'textarea_name' => 'bloopanimation-mepr-checkout-txt',
+            'textarea_rows' => 10,
+        ) );
+
         ?>
-        <table>
-            <tbody>
-                <tr>
-                    <td style="vertical-align: top;">
-                        <?php esc_html_e( 'More Details', 'bloopanimation' ); ?>
-                    </td>
-                    <td>
-                        <textarea name="bloopanimation-mepr-checkout-txt" rows="4" cols="50"><?php echo esc_html( $checkout_txt );?></textarea>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <p>
+           <?php esc_html_e( 'Here\'s an example on how to customize the output with CSS. Paste the code e.g. in a Code Snippets plugin.', 'bloopanimation' ); ?> 
+        </p>
+        <p>
+            <code>
+                .bloopanimation-logo-n-text {
+                    color: red;
+                }
+            </code>
+        </p>
         <?php 
     }
 
@@ -54,7 +58,7 @@ class BACU_BloopAnimation_Customizations_Memberpress_Meta_Fields {
      *
      */
     function save_post_meta( $post_id, $post, $update ) {
-        update_post_meta( $post_id, 'bloopanimation-mepr-checkout-txt', sanitize_text_field( $_POST['bloopanimation-mepr-checkout-txt'] ) );
+        update_post_meta( $post_id, 'bloopanimation-mepr-checkout-txt', wp_kses_post( $_POST['bloopanimation-mepr-checkout-txt'] ) );
     }
 }//End of class
 

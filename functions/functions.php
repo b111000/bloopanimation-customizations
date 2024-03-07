@@ -7,6 +7,8 @@
  */
 function bloopanimation_get_previous_purchases_value( $user_id ) {
 
+	// SELECT SUM(total) FROM wp_edd_orders WHERE user_id = 1;
+
     global $wpdb;
 
 	$result = $wpdb->get_var($wpdb->prepare(

@@ -23,9 +23,6 @@ body .mepr-checkout-container .invoice-wrapper .mepr_price {
 .bloopanimation-logo-n-text img {
 	max-width: 100px;
 }
-.single-memberpressproduct .site-branding__logo {
-	display: none;
-}
 .mepr-checkout-container .mepr-product-rows {
 	display: flex;
     flex-direction: column;
@@ -35,6 +32,10 @@ body .mepr-checkout-container .invoice-wrapper .mepr_price {
 .mepr-checkout-container .have-coupon-link:visited,
 .mepr-checkout-container .have-coupon-link:active {
 	color: inherit;
+}
+.mepr-checkout-container .have-coupon-link {
+	font-size: 13px;
+    color: gray;
 }
 .mepr-transaction-invoice-wrapper {
 	order: 1;
@@ -49,6 +50,31 @@ body .mepr-checkout-container .invoice-wrapper .mepr_price {
 .bloopanimation-logo-n-text span {
 	display: block;
 }
-.bloopanimation-logo-n-text {
-	margin-top: 60px;
+.bloopanimation-logo-n-text span {
+	margin-top: 1em;
+}
+body .form-wrapper .mp-form-row input[type="text"],
+body .form-wrapper .mp-form-row input[type="email"] {
+	box-shadow: none;
+}
+
+/*
+* Desktop
+*/
+@media only screen and (min-width: 768px) {
+	.bloopanimation-logo-n-text {
+		margin-top: 60px;
+	}
+	.single-memberpressproduct .site-branding__logo {
+		display: none;
+	}
+}
+
+/*
+* Mobile
+*/
+@media only screen and (max-width: 767px) {
+	.bloopanimation-logo-n-text img {
+		display: none;
+	}
 }
