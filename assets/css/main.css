@@ -1,11 +1,17 @@
+.mepr-checkout-container.mp_wrapper .mp-table tr td .desc {
+    display: none;
+}
 .mp-table .bloopanimation-logo-n-text {
 	display: none;
 }
-.mepr-checkout-container .invoice-heading {
-	display: none;
-}
 body .mepr-checkout-container .invoice-wrapper .invoice-amount {
-	font-size: inherit;
+	display: none !important;
+}
+body .mepr-checkout-container .invoice-wrapper .invoice-heading {
+/*	display: none;*/
+}
+body .mepr-checkout-container .invoice-wrapper {
+	padding-top: 0;
 }
 body .mepr-checkout-container .invoice-wrapper table .bt {
     font-weight: bold;
@@ -24,6 +30,12 @@ body .mepr-checkout-container .invoice-wrapper .mepr_price {
 	display: flex;
     flex-direction: column;
 }
+.mepr-checkout-container .have-coupon-link,
+.mepr-checkout-container .have-coupon-link:hover,
+.mepr-checkout-container .have-coupon-link:visited,
+.mepr-checkout-container .have-coupon-link:active {
+	color: inherit;
+}
 .mepr-transaction-invoice-wrapper {
 	order: 1;
 }
@@ -32,4 +44,11 @@ body .mepr-checkout-container .invoice-wrapper .mepr_price {
 }
 .have-coupon-link {
 	order: 3;
+}
+.bloopanimation-logo-n-text,
+.bloopanimation-logo-n-text span {
+	display: block;
+}
+.bloopanimation-logo-n-text {
+	margin-top: 60px;
 }
