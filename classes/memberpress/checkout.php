@@ -219,10 +219,6 @@ class BACU_BloopAnimation_Customizations_Memberpress_Checkout {
      */
     function header_css_styles_logged_in() {
 
-        if ( !is_user_logged_in() ) {
-            return;
-        }
-
         global $post;
 
         if ( $post == null || !isset( $post->ID ) ) {
