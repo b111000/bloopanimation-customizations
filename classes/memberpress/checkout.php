@@ -13,7 +13,7 @@ class BACU_BloopAnimation_Customizations_Memberpress_Checkout {
         add_filter( 'mepr_coupon_get_discount_amount', array( $this, 'set_memberpress_coupon_amount' ), 900, 3 );
         add_filter( 'mepr-invoice', array( $this, 'remove_payment_txt_from_item' ), 900, 2 );
 
-        add_action( 'wp_print_styles', array( $this, 'header_css_styles_logged_in' ) );
+        add_action( 'wp_print_styles', array( $this, 'header_css_styles' ) );
         add_action( 'template_redirect', array( $this, 'set_memberpress_coupon' ) );
     }
 
@@ -217,7 +217,7 @@ class BACU_BloopAnimation_Customizations_Memberpress_Checkout {
      *
      * @return void
      */
-    function header_css_styles_logged_in() {
+    function header_css_styles() {
 
         global $post;
 
@@ -225,7 +225,6 @@ class BACU_BloopAnimation_Customizations_Memberpress_Checkout {
             return;
         }
 
-        $user_id    = get_current_user_id();
         $post_id    = $post->ID;
         $post_title = get_the_title( $post_id );
 
