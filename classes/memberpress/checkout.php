@@ -227,6 +227,7 @@ class BACU_BloopAnimation_Customizations_Memberpress_Checkout {
             return;
         }
 
+        $user_id    = get_current_user_id();
         $post_id    = $post->ID;
         $post_title = get_the_title( $post_id );
 
@@ -234,7 +235,7 @@ class BACU_BloopAnimation_Customizations_Memberpress_Checkout {
 
         ?>
         <style type="text/css">
-            <?php if ( $post_title == 'All-Access Pass' && !empty( bloopanimation_get_previous_purchases_value( $user_id ) ) ): ?>
+            <?php if ( $post_title == 'All-Access Pass' && empty( bloopanimation_get_previous_purchases_value( $user_id ) ) ): ?>
                 .mepr-checkout-container .have-coupon-link {
                     display: none;
                 }
