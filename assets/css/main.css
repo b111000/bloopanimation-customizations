@@ -7,9 +7,6 @@
 body .mepr-checkout-container .invoice-wrapper .invoice-amount {
 	display: none !important;
 }
-body .mepr-checkout-container .invoice-wrapper .invoice-heading {
-/*	display: none;*/
-}
 body .mepr-checkout-container .invoice-wrapper {
 	padding-top: 0;
 }
@@ -50,6 +47,14 @@ body .mepr-checkout-container .invoice-wrapper .mepr_price {
 .bloopanimation-logo-n-text span {
 	display: block;
 }
+.bloopanimation-logo-n-text h1,
+.bloopanimation-logo-n-text h2,
+.bloopanimation-logo-n-text h3,
+.bloopanimation-logo-n-text h4,
+.bloopanimation-logo-n-text h5,
+.bloopanimation-logo-n-text h6 {
+	margin-top: 0;
+}
 .bloopanimation-logo-n-text span {
 	margin-top: 1em;
 }
@@ -76,5 +81,10 @@ body .form-wrapper .mp-form-row input[type="email"] {
 @media only screen and (max-width: 767px) {
 	.bloopanimation-logo-n-text img {
 		display: none;
+	}
+	body .mepr-checkout-container .invoice-wrapper,
+	body .mepr-checkout-container .form-wrapper {
+		padding-left: 23px;
+	    padding-right: 23px;
 	}
 }

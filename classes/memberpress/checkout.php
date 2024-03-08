@@ -15,6 +15,7 @@ class BACU_BloopAnimation_Customizations_Memberpress_Checkout {
 
         add_action( 'wp_print_styles', array( $this, 'header_css_styles' ) );
         add_action( 'template_redirect', array( $this, 'set_memberpress_coupon' ) );
+        add_action( 'mepr-checkout-after-email-field', array( $this, 'login_link' ) );
     }
 
     /**
@@ -124,10 +125,15 @@ class BACU_BloopAnimation_Customizations_Memberpress_Checkout {
                 $translation = 'Upgrade Discount';
             }elseif( $translation == 'Have a coupon?' || $translation == 'Coupon Code:' ) {
                 $translation = 'Discount Code';
+                $translation = apply_filters( 'bloopanimation-mepr-coupon-code-text', $translation );
             }
 
-        }elseif( $translation == 'Have a coupon?' || $translation == 'Coupon Code:' ) {
+        }elseif( $translation == 'Have a coupon?' ) {
             $translation = 'Discount Code';
+            $translation = apply_filters( 'bloopanimation-mepr-coupon-code-text', $translation );
+        }elseif( $translation == 'Coupon Code:' ) {
+            $translation = 'Discount Code';
+            $translation = apply_filters( 'bloopanimation-mepr-coupon-code-text-after-click', $translation );
         }
 
         return $translation;
@@ -282,6 +288,24 @@ class BACU_BloopAnimation_Customizations_Memberpress_Checkout {
         }
 
         $_GET['coupon'] = 'Upgrade-Discount';
+    }
+
+    /**
+     * Add login link
+     * 
+     */ 
+    function login_link( $product_id ) {
+        if ( is_user_logged_in() ) {
+            return;
+        }
+        ?>
+        <p>
+            <?php esc_html_e( 'Already have an account?', 'bloopanimation' ); ?>
+            <a href="<?php echo esc_url( wp_login_url() ); ?>">
+                <?php esc_html_e( 'Sign in', 'bloopanimation' ); ?>
+            </a>
+        </p>
+        <?php
     }
 }//End of class
 
