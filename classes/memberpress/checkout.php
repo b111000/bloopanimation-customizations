@@ -331,10 +331,15 @@ class BACU_BloopAnimation_Customizations_Memberpress_Checkout {
         ?>
         <p>
             <?php esc_html_e( 'Already have an account?', 'bloopanimation' ); ?>
-            <a href="<?php echo esc_url( wp_login_url() ); ?>">
+            <a href="<?php echo esc_url( wp_login_url() ); ?>" id="bloopanimation-login-link">
                 <?php esc_html_e( 'Sign in', 'bloopanimation' ); ?>
             </a>
         </p>
+        <div class="bloopanimation-login-section">
+            <input type="text" placeholder="<?php esc_html_e( 'Username', 'bloopanimation' ); ?>">
+            <input type="password" placeholder="<?php esc_html_e( 'Password', 'bloopanimation' ); ?>">
+            <button><?php esc_html_e( 'Sign in', 'bloopanimation' ); ?></button>
+        </div>
         <?php
     }
 

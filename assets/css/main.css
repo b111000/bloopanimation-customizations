@@ -115,6 +115,15 @@ body .form-wrapper .mp-form-row input[type="email"] {
     border-radius: 8px;
     margin-bottom: 20px;
 }
+.bloopanimation-login-section {
+	display: none;
+	background: #f6f6f6;
+    padding: 20px;
+    border-radius: 0.25rem;
+}
+.bloopanimation-login-section input {
+	margin-bottom: 20px;
+}
 
 /*
 * Desktop
