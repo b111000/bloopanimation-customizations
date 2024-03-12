@@ -414,21 +414,27 @@ class BACU_BloopAnimation_Customizations_Memberpress_Checkout {
             return $content;
         }
 
+        if ( isset( $_GET['coupon'] ) && $_GET['coupon'] == 'Upgrade-Discount' ) {
+            return $content;
+        }
+
+        global $post;
+        $post_id  = -1;
+        if ( $post != null && isset( $post->ID ) ) {
+            $post_id = $post->ID;
+        }
+
+        if ( get_the_title( $post_id ) != 'All-Access Pass' && get_the_title( $post_id ) != 'All-Access Pass (Payments)' ) {
+            return $content;
+        }
+
         ob_start();
         ?>
         <div class="bloopanimation-payment-options-wrapper">
 
             <?php
 
-                global $post;
-
                 $products = [];
-                $post_id  = -1;
-
-                if ( $post != null && isset( $post->ID ) ) {
-                    $post_id = $post->ID;
-                }
-
                 $args = array(
                     's'              => 'All-Access Pass',
                     'orderby'        => 'relevance',
