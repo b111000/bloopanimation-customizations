@@ -37,11 +37,22 @@ body .mepr-checkout-container .invoice-wrapper .mepr_price {
 .mepr-transaction-invoice-wrapper {
 	order: 1;
 }
-.mp-form-row.mepr_coupon {
+.have-coupon-link {
 	order: 2;
 }
-.have-coupon-link {
+.mp-form-row.mepr_coupon {
 	order: 3;
+}
+.bloopanimation-payment-options-wrapper {
+	order: 4;
+	margin-top: 25px;
+}
+.bloopanimation-payment-options-wrapper a:first-child {
+	background: #f6f6f6;
+}
+.bloopanimation-payment-option p {
+	margin-top: 3px;
+    margin-bottom: 0;
 }
 .bloopanimation-logo-n-text,
 .bloopanimation-logo-n-text span {
@@ -61,6 +72,48 @@ body .mepr-checkout-container .invoice-wrapper .mepr_price {
 body .form-wrapper .mp-form-row input[type="text"],
 body .form-wrapper .mp-form-row input[type="email"] {
 	box-shadow: none;
+}
+.bloopanimation-header-cart {
+	max-width: 1185px;
+	margin: 0 auto;
+	text-align: right;
+	position: fixed;
+	z-index: 1000;
+	right: 0;
+	width: 100%;
+	left: 0;
+}
+.bloopanimation-header-cart a {
+	margin-top: 15px;
+	position: absolute;
+	right: 0;
+	margin-right: 20px;
+}
+.bloopanimation-bubble {
+	position: absolute;
+	top: -5px;
+	background: #FF8243;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	color: #fff;
+	font-size: 13px;
+	text-align: center;
+	right: -8px;
+}
+.bloopanimation-payment-option,
+.bloopanimation-payment-option:hover,
+.bloopanimation-payment-option:active,
+.bloopanimation-payment-option:visited {
+	color: inherit;
+}
+.bloopanimation-payment-option {
+	display: flex;
+	justify-content: space-between;
+    border: 1px solid #ced4da;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
 }
 
 /*
@@ -86,5 +139,8 @@ body .form-wrapper .mp-form-row input[type="email"] {
 	body .mepr-checkout-container .form-wrapper {
 		padding-left: 23px;
 	    padding-right: 23px;
+	}
+	.bloopanimation-payment-option {
+		display: block;
 	}
 }

@@ -12,10 +12,13 @@ class BACU_BloopAnimation_Customizations_Memberpress_Checkout {
         add_filter( 'clean_url', array( $this, 'replace_with_featured_img_url' ), 900, 3 );
         add_filter( 'mepr_coupon_get_discount_amount', array( $this, 'set_memberpress_coupon_amount' ), 900, 3 );
         add_filter( 'mepr-invoice', array( $this, 'remove_payment_txt_from_item' ), 900, 2 );
+        add_filter( 'the_content', array( $this, 'payment_options' ), 900, 1 );
 
         add_action( 'wp_print_styles', array( $this, 'header_css_styles' ) );
         add_action( 'template_redirect', array( $this, 'set_memberpress_coupon' ) );
         add_action( 'mepr-checkout-after-email-field', array( $this, 'login_link' ) );
+        add_action( 'template_redirect', array( $this, 'set_in_cart_product_id' ) );
+        add_action( 'cs_masthead', array( $this, 'add_to_cart_button' ) );
     }
 
     /**
@@ -182,8 +185,30 @@ class BACU_BloopAnimation_Customizations_Memberpress_Checkout {
             return $discount_amount;
         }
 
+        if ( !isset( $_POST['mepr_payment_method'] ) && !isset( $_POST['action'] ) ) {
+            return $discount_amount;
+        }
+
+        if ( !isset( $_POST['mepr_product_id'] ) ) {
+            global $post;
+
+            if ( $post == null || !isset( $post->ID ) ) {
+                return $translation;
+            }
+
+            $post_id = $post->ID;
+        }else {
+            $post_id = sanitize_text_field( $_POST['mepr_product_id'] );
+        }
+
+        $product         = new MeprProduct( $post_id );
+        $price           = $product->price;
         $user_id         = get_current_user_id();
         $discount_amount = bloopanimation_get_previous_purchases_value( $user_id );
+
+        if ( $discount_amount >= $price ) {
+            $discount_amount = $price;
+        }
 
         return $discount_amount;
     }
@@ -241,6 +266,11 @@ class BACU_BloopAnimation_Customizations_Memberpress_Checkout {
             <?php if ( $post_title == 'All-Access Pass' ): ?>
                 .mepr-checkout-container .have-coupon-link {
                     display: none;
+                }
+            <?php endif ?>
+            <?php if ( isset( $_SESSION['bloopanimation-in-cart-product-id'] ) ): ?>
+                .x-masthead .x-bar-container.e115109-e10 {
+                    margin-right: 40px;
                 }
             <?php endif ?>
         </style>
@@ -306,6 +336,142 @@ class BACU_BloopAnimation_Customizations_Memberpress_Checkout {
             </a>
         </p>
         <?php
+    }
+
+    /**
+     * Set in cart product id to be used to generate the "add to cart" link
+     * 
+     */ 
+    function set_in_cart_product_id() {
+
+        if ( is_admin() ) {
+            return;
+        }
+
+        global $post;
+
+        if ( $post == null || !isset( $post->ID ) ) {
+            return;
+        }
+
+        $post_id = $post->ID;
+
+        if ( get_post_type() != 'memberpressproduct' ) {
+            return;
+        }
+
+        // Start the session
+        if ( session_status() == PHP_SESSION_NONE ) {
+            session_start();
+        }
+
+        // Set product id
+        $_SESSION['bloopanimation-in-cart-product-id'] = $post_id;
+    }
+
+    /**
+     * Show add to cart link or button
+     * 
+     */ 
+    function add_to_cart_button() {
+
+        if ( !isset( $_SESSION['bloopanimation-in-cart-product-id'] ) ) {
+            return;
+        }
+
+        $product_id = $_SESSION['bloopanimation-in-cart-product-id'];
+
+        ?>
+        <div class="bloopanimation-header-cart">
+            <a href="<?php echo get_the_permalink( $product_id ); ?>">
+                <i class="wpmenucart-icon-shopping-cart-0" ></i>
+                <div class="bloopanimation-bubble">1</div>
+            </a>
+        </div>
+        <?php
+    }
+
+    /**
+     * Payment options on checkout page html
+     * 
+     */ 
+    function payment_options( $content ) {
+
+        if ( !isset( $_POST['mepr_payment_method'] ) && !isset( $_POST['action'] ) ) {
+            return $content;
+        }
+
+        ob_start();
+        ?>
+        <div class="bloopanimation-payment-options-wrapper">
+
+            <?php
+
+                global $post;
+
+                $products = [];
+                $post_id  = -1;
+
+                if ( $post != null && isset( $post->ID ) ) {
+                    $post_id = $post->ID;
+                }
+
+                $args = array(
+                    's'              => 'All-Access Pass',
+                    'orderby'        => 'relevance',
+                    'fields'         => 'ids',
+                    'post_status'    => 'publish',
+                    'post_type'      => array( 'memberpressproduct' ),
+                    'posts_per_page' => 1,
+                    'post__not_in'   => array( $post_id ),
+                ); 
+
+                $products = get_posts( $args );
+                array_unshift( $products, $post_id );
+            ?>
+
+            <?php if ( count( $products ) >= 1 ): ?>
+                <?php foreach ( $products as $product_id ): ?>
+
+                    <?php
+                        $product          = new MeprProduct( $product_id );
+                        $price            = $product->price;
+                        $limit_cycles_num = $product->limit_cycles_num;
+                        $limit_cycles     = $product->limit_cycles;
+                    ?>
+
+                    <a href="<?php echo esc_url( get_the_permalink( $product_id ) ); ?>" class="bloopanimation-payment-option">
+                        <div>
+                            <strong>
+                                <?php echo get_the_title( $product_id ); ?>
+                            </strong>
+                            <?php if ( !empty( $limit_cycles_num ) && !empty( $limit_cycles ) ): ?>
+                                <p>
+                                    <?php echo $limit_cycles_num . ' monthly payments of $' .$price;?>
+                                </p>
+                            <?php endif ?>
+                        </div>
+                        <div>
+                            $<?php echo esc_html( $price ); ?> USD
+                        </div>
+                    </a>
+                <?php endforeach ?>
+            <?php endif ?>
+
+        </div>
+
+        <?php 
+        $payments_html = ob_get_clean();
+
+        // Use regex to find the position after the closing tag of the "have-coupon-link" element
+        $pattern = '/<a\s+class=["\']have-coupon-link["\'][^>]*>.*?<\/a>/is';
+
+        // Perform the replacement
+        $content = preg_replace_callback( $pattern, function ( $matches ) use ( $payments_html ) {
+            return $matches[0] . $payments_html;
+        }, $content);
+
+        return $content;
     }
 }//End of class
 

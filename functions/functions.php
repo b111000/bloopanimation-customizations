@@ -10,20 +10,20 @@ function bloopanimation_get_previous_purchases_value( $user_id ) {
     global $wpdb;
 
     // Check Membpress Spending
-	$result = $wpdb->get_var($wpdb->prepare(
+	$membpress_spending = $wpdb->get_var($wpdb->prepare(
 	    "SELECT SUM(total) FROM {$wpdb->prefix}mepr_transactions WHERE user_id = %d",
 	    $user_id
 	));
-
-	if ( !empty( $result ) || $result !== null ) {
-		return $result;
-	}
+	$membpress_spending = ( $membpress_spending !== null ) ? $membpress_spending : 0;
 
 	// Check Easy Digital Downloads Spending
-	$result = $wpdb->get_var($wpdb->prepare(
+	$edd_spending = $wpdb->get_var($wpdb->prepare(
 	    "SELECT SUM(total) FROM {$wpdb->prefix}edd_orders WHERE user_id = %d",
 	    $user_id
 	));
+	$edd_spending = ( $edd_spending !== null ) ? $edd_spending : 0;
 
-	return ($result !== null) ? $result : 0;
+	$total = ( $membpress_spending + $edd_spending );
+
+	return $total;
 }
