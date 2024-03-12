@@ -124,6 +124,36 @@ body .form-wrapper .mp-form-row input[type="email"] {
 .bloopanimation-login-section input {
 	margin-bottom: 20px;
 }
+.mepr-form .bloopanimation-login-section input[type=text].bloopanimation-validation-error,
+.mepr-form .bloopanimation-login-section input[type=password].bloopanimation-validation-error {
+	border-color: red;
+}
+#bloopanimation-validation-msg {
+	margin-top: 0;
+    color: red;
+    margin-bottom: 20px;
+    font-weight: bold;
+    display: none;
+}
+.bloopanimation-spinner {
+	display: none;
+    width: 15px;
+    height: 15px;
+    border: 2px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 2px solid #333;
+    -webkit-animation: bloopanimation-spin .7s linear infinite;
+    animation: bloopanimation-spin .7s linear infinite;
+    margin-left: 5px;
+}
+@-webkit-keyframes bloopanimation-spin {
+	0% { -webkit-transform: rotate(0deg); }
+	100% { -webkit-transform: rotate(360deg); }
+}
+@keyframes bloopanimation-spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+}
 
 /*
 * Desktop

@@ -10,7 +10,7 @@
 
 		// Hide login form when clicking outside any of the elements
         $(document).on('click', function(event) {
-            if ( !$(event.target).closest('#bloopanimation-login-link').length ) {
+            if ( !$(event.target).closest( '#bloopanimation-login-link, .bloopanimation-login-section').length ) {
                 $( '.bloopanimation-login-section' ).hide();
             }
         });
@@ -18,7 +18,56 @@
         // Login
         $( 'body' ).on( 'click', '.bloopanimation-login-section button', function(e) {
 			e.preventDefault();
-			e.stopPropagation();
+
+			// Remove previous error classes
+            $('.bloopanimation-login-section input').removeClass('bloopanimation-validation-error');
+            $('#bloopanimation-validation-msg ').text('Please fill all the fields highlighted in red.');
+            $('#bloopanimation-validation-msg ').hide();
+
+            // Check if any input field is empty
+            var any_empty = false;
+            $('.bloopanimation-login-section input').each(function() {
+                if ($(this).val().trim() === '') {
+                    any_empty = true;
+                    $(this).addClass('bloopanimation-validation-error');
+                }
+            });
+
+            // If any field is empty, prevent form submission
+            if ( any_empty ) {
+            	$('#bloopanimation-validation-msg ').show();
+            	return;
+            }
+
+            $(this).find('.bloopanimation-spinner').css('display', 'inline-block');
+            $(this).prop('disabled', true);
+
+            // Login
+			var data = {
+                'action':     'bloopanimation_login',
+                'username':   $('#bloopanimation-login-username').val().trim(),
+                'password':   $('#bloopanimation-login-password').val().trim(),
+                'ajax_nonce': bloopanimation_object.ajax_nonce,
+            };
+			$.ajax({ 
+                type: 'POST', 
+                url: bloopanimation_object.ajax_url, 
+                data: data,
+                success: function ( data ) {
+
+                	$('.bloopanimation-login-section button').find('.bloopanimation-spinner').hide();
+            		$('.bloopanimation-login-section button').prop('disabled', false);
+                	if ( !data.success ) {
+                		$('#bloopanimation-validation-msg ').text( data.data );
+            			$('#bloopanimation-validation-msg ').show();
+                	}else if( data.success ){
+                		location.reload();
+                	}
+
+                },//success
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                },//Error
+            });
 		});
 	});
 })(jQuery)

@@ -19,6 +19,9 @@ class BACU_BloopAnimation_Customizations_Memberpress_Checkout {
         add_action( 'mepr-checkout-after-email-field', array( $this, 'login_link' ) );
         add_action( 'template_redirect', array( $this, 'set_in_cart_product_id' ) );
         add_action( 'cs_masthead', array( $this, 'add_to_cart_button' ) );
+
+        add_action( 'wp_ajax_nopriv_bloopanimation_login', array( $this, 'login' ) );
+        add_action( 'wp_ajax_bloopanimation_login', array( $this, 'login' ) );
     }
 
     /**
@@ -336,9 +339,14 @@ class BACU_BloopAnimation_Customizations_Memberpress_Checkout {
             </a>
         </p>
         <div class="bloopanimation-login-section">
-            <input type="text" placeholder="<?php esc_html_e( 'Username', 'bloopanimation' ); ?>">
-            <input type="password" placeholder="<?php esc_html_e( 'Password', 'bloopanimation' ); ?>">
-            <button><?php esc_html_e( 'Sign in', 'bloopanimation' ); ?></button>
+            <p id="bloopanimation-validation-msg">
+            </p>
+            <input type="text" placeholder="<?php esc_html_e( 'Username', 'bloopanimation' ); ?>" id="bloopanimation-login-username">
+            <input type="password" placeholder="<?php esc_html_e( 'Password', 'bloopanimation' ); ?>" id="bloopanimation-login-password">
+            <button>
+                <?php esc_html_e( 'Sign in', 'bloopanimation' ); ?>
+                <div class="bloopanimation-spinner"></div> 
+            </button>
         </div>
         <?php
     }
@@ -477,6 +485,33 @@ class BACU_BloopAnimation_Customizations_Memberpress_Checkout {
         }, $content);
 
         return $content;
+    }
+
+    /**
+     * Login
+     * 
+     */ 
+    function login() {
+        // Check AJAX request
+        check_ajax_referer( 'bloopanimation_nonce', 'ajax_nonce' );
+
+        $data                   = [];
+        $username               = sanitize_text_field( $_POST['username'] );
+        $password               = sanitize_text_field( $_POST['password'] );
+
+        $creds['user_login']    = $username;
+        $creds['user_password'] = $password;
+        $creds['remember']      = true; 
+        $user                   = wp_signon( $creds, false );
+
+        // Login unsuccessful
+        if ( is_wp_error( $user ) ) {
+            wp_send_json_error( __( 'Invalid username or password.', 'bloopanimation' ) );
+        }
+
+        // Login successful
+        $data['success'] = true;
+        wp_send_json( $data );
     }
 }//End of class
 
