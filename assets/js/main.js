@@ -5,13 +5,27 @@
 		// Show or hide login form
 		$( 'body' ).on( 'click', '#bloopanimation-login-link', function(e) {
 			e.preventDefault();
-			$('.bloopanimation-login-section').slideDown();
+
+            if ( $('.bloopanimation-login-section').hasClass('bloopanimation-reveal-section') ) {
+                $('.bloopanimation-login-section').slideUp();
+                $('.bloopanimation-login-section').removeClass('bloopanimation-reveal-section');
+            }else {
+                $('.bloopanimation-login-section').slideDown();
+                $('.bloopanimation-login-section').addClass('bloopanimation-reveal-section');
+            }
 		});
 
 		// Hide login form when clicking outside any of the elements
         $(document).on('click', function(event) {
             if ( !$(event.target).closest( '#bloopanimation-login-link, .bloopanimation-login-section').length ) {
-                $( '.bloopanimation-login-section' ).hide();
+
+                // Don't hide if doing ajax
+                if ( $('.bloopanimation-login-section button').attr('disabled') ) {
+                    return;
+                }
+
+                $('.bloopanimation-login-section').slideUp();
+                $('.bloopanimation-login-section').removeClass('bloopanimation-reveal-section');
             }
         });
 

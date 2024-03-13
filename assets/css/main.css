@@ -135,6 +135,12 @@ body .form-wrapper .mp-form-row input[type="email"] {
     font-weight: bold;
     display: none;
 }
+.bloopanimation-login-section button,
+.bloopanimation-login-section button:hover,
+.bloopanimation-login-section button:focus {
+	background-color: #ff8243;
+    border-color: #ff8243;
+}
 .bloopanimation-spinner {
 	display: none;
     width: 15px;
