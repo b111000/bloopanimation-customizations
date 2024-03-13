@@ -117,9 +117,9 @@ body .form-wrapper .mp-form-row input[type="email"] {
 }
 .bloopanimation-login-section {
 	display: none;
-	background: #f6f6f6;
-    padding: 20px;
-    border-radius: 0.25rem;
+}
+.mepr-form .bloopanimation-login-link-wrapper {
+	margin-bottom: 0;
 }
 .bloopanimation-login-section input {
 	margin-bottom: 20px;
@@ -145,6 +145,7 @@ body .form-wrapper .mp-form-row input[type="email"] {
     -webkit-animation: bloopanimation-spin .7s linear infinite;
     animation: bloopanimation-spin .7s linear infinite;
     margin-left: 5px;
+    margin-bottom: -2px;
 }
 @-webkit-keyframes bloopanimation-spin {
 	0% { -webkit-transform: rotate(0deg); }

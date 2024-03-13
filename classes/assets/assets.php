@@ -17,7 +17,7 @@ class BACU_BloopAnimation_Customizations_Assets {
     public static function css_styles() {
         ob_start();
         ?>
-            <link rel='stylesheet' id='bloopanimation-main' href='<?php echo esc_url( plugins_url( 'assets/css/main.css', dirname(__DIR__) ) ); ?>?ver=1.0.0.1xb1' type='text/css' media='all' />
+            <link rel='stylesheet' id='bloopanimation-main' href='<?php echo esc_url( plugins_url( 'assets/css/main.css', dirname(__DIR__) ) ); ?>?ver=1.0.0.1cb1' type='text/css' media='all' />
         <?php
         echo trim( ob_get_clean() );
     }
@@ -27,7 +27,7 @@ class BACU_BloopAnimation_Customizations_Assets {
      * 
      */ 
     function enqueue_scripts_styles() {
-        wp_enqueue_script( 'bloopanimation-main', plugins_url('assets/js/main.js',  dirname(__DIR__) ), array('jquery'), '1.0.0', true );
+        wp_enqueue_script( 'bloopanimation-main', plugins_url('assets/js/main.js',  dirname(__DIR__) ), array('jquery'), '1.0.0-k', true );
 
         $ajax_nonce = wp_create_nonce( 'bloopanimation_nonce' );
         wp_localize_script( 'bloopanimation-main', 'bloopanimation_object', 
