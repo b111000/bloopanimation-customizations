@@ -332,36 +332,38 @@ class BACU_BloopAnimation_Customizations_Memberpress_Checkout {
             return;
         }
         ?>
-        <p class="bloopanimation-login-link-wrapper">
-            <?php esc_html_e( 'Already have an account?', 'bloopanimation' ); ?>
-            <a href="<?php echo esc_url( wp_login_url() ); ?>" id="bloopanimation-login-link">
-                <?php esc_html_e( 'Sign in', 'bloopanimation' ); ?>
-            </a>
-        </p>
-        <div class="bloopanimation-login-section">
-
-            <p id="bloopanimation-validation-msg">
+        <div class="bloopanimation-login-container">
+            <p class="bloopanimation-login-link-wrapper">
+                <?php esc_html_e( 'Already have an account?', 'bloopanimation' ); ?>
+                <a href="<?php echo esc_url( wp_login_url() ); ?>" id="bloopanimation-login-link">
+                    <?php esc_html_e( 'Sign in', 'bloopanimation' ); ?>
+                </a>
             </p>
+            <div class="bloopanimation-login-section">
 
-            <div class="mp-form-row">
-                <div class="mp-form-label">
-                    <label><?php esc_html_e( 'Username', 'bloopanimation' ); ?>:*</label>
+                <p id="bloopanimation-validation-msg">
+                </p>
+
+                <div class="mp-form-row">
+                    <div class="mp-form-label">
+                        <label><?php esc_html_e( 'Username', 'bloopanimation' ); ?>:*</label>
+                    </div>
+                    <input type="text" id="bloopanimation-login-username">
                 </div>
-                <input type="text" id="bloopanimation-login-username">
-            </div>
 
-            <div class="mp-form-row">
-                <div class="mp-form-label">
-                    <label><?php esc_html_e( 'Password', 'bloopanimation' ); ?>:*</label>
+                <div class="mp-form-row">
+                    <div class="mp-form-label">
+                        <label><?php esc_html_e( 'Password', 'bloopanimation' ); ?>:*</label>
+                    </div>
+                    <input type="password" id="bloopanimation-login-password">
                 </div>
-                <input type="password" id="bloopanimation-login-password">
+
+                <button>
+                    <?php esc_html_e( 'Sign in', 'bloopanimation' ); ?>
+                    <div class="bloopanimation-spinner"></div> 
+                </button>
+
             </div>
-
-            <button>
-                <?php esc_html_e( 'Sign in', 'bloopanimation' ); ?>
-                <div class="bloopanimation-spinner"></div> 
-            </button>
-
         </div>
         <?php
     }
@@ -384,7 +386,7 @@ class BACU_BloopAnimation_Customizations_Memberpress_Checkout {
 
         $post_id = $post->ID;
 
-        if ( get_post_type() != 'memberpressproduct' ) {
+        if ( get_post_type( $post_id ) != 'memberpressproduct' ) {
             return;
         }
 

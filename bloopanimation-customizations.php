@@ -16,6 +16,8 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 include( plugin_dir_path( __FILE__ ) . 'classes/memberpress/checkout.php' );
 include( plugin_dir_path( __FILE__ ) . 'classes/memberpress/meta-fields.php' );
 include( plugin_dir_path( __FILE__ ) . 'classes/assets/assets.php' );
+include( plugin_dir_path( __FILE__ ) . 'classes/groundhogg/groundhogg.php' );
+include( plugin_dir_path( __FILE__ ) . 'classes/groundhogg/shortcodes.php' );
 
 /**
  * Functions

@@ -70,7 +70,8 @@ body .mepr-checkout-container .invoice-wrapper .mepr_price {
 	margin-top: 1em;
 }
 body .form-wrapper .mp-form-row input[type="text"],
-body .form-wrapper .mp-form-row input[type="email"] {
+body .form-wrapper .mp-form-row input[type="email"],
+body .form-wrapper .mp-form-row input[type=password] {
 	box-shadow: none;
 }
 .bloopanimation-header-cart {
@@ -117,9 +118,11 @@ body .form-wrapper .mp-form-row input[type="email"] {
 }
 .bloopanimation-login-section {
 	display: none;
+	margin-top: 10px;
 }
 .mepr-form .bloopanimation-login-link-wrapper {
 	margin-bottom: 0;
+    font-size: 14px;
 }
 .bloopanimation-login-section input {
 	margin-bottom: 20px;

@@ -69,9 +69,10 @@
                 data: data,
                 success: function ( data ) {
 
-                	$('.bloopanimation-login-section button').find('.bloopanimation-spinner').hide();
-            		$('.bloopanimation-login-section button').prop('disabled', false);
                 	if ( !data.success ) {
+                        $('.bloopanimation-login-section button').find('.bloopanimation-spinner').hide();
+                        $('.bloopanimation-login-section button').prop('disabled', false);
+
                 		$('#bloopanimation-validation-msg ').text( data.data );
             			$('#bloopanimation-validation-msg ').show();
                 	}else if( data.success ){
