@@ -119,7 +119,7 @@ class BACU_BloopAnimation_Customizations_Groundhogg {
             'email' => $email
         ] );
 
-        \Groundhogg\do_plugin_api_benchmark( 'bloopanimation_mepr_abandoned_cart_recovery', $contact->get_id() );
+        \Groundhogg\do_plugin_api_benchmark( 'bloopanimation_memberpress_cart_is_abandoned', $contact->get_id() );
     }
 
     /**
@@ -222,7 +222,7 @@ class BACU_BloopAnimation_Customizations_Groundhogg {
         $ltv_value        = apply_filters( 'bloopanimation-customer-ltv', $ltv_value );
 
         $tags_to_add = array(
-            'Purchase is Over $'.$ltv_value,
+            'Sale is Over $'.$ltv_value,
         );
 
         if ( $purchases_so_far >= $ltv_value ) {
@@ -236,7 +236,7 @@ class BACU_BloopAnimation_Customizations_Groundhogg {
      * 
      */
     function stop_funnel( $email ) {
-        \Groundhogg\do_plugin_api_benchmark( 'bloopanimation_mepr_order_recovered', $email, false );
+        \Groundhogg\do_plugin_api_benchmark( 'bloopanimation_memberpress_sale_was_made', $email, false );
     }
 }//End of class
 
