@@ -10,6 +10,9 @@ class BACU_BloopAnimation_Customizations_Groundhogg {
         add_action( 'template_redirect', array( $this, 'process_contact_logged_in' ) );
         add_action( 'bloopanimation_groundhogg_process_contact', array( $this, 'start_benchmark' ), 10, 1 );
         add_action( 'template_redirect', array( $this, 'redirect' ) );
+        add_action( 'mepr-txn-store', array( $this, 'delete_memberpress_pending_purchase' ), 10, 2 );
+        add_action( 'mepr-txn-store', array( $this, 'tag_user' ), 10, 2 );
+        add_action( 'bloopanimation_groundhogg_cart_recovered', array( $this, 'stop_funnel' ), 10, 1 );
     }
 
     /**
@@ -41,9 +44,6 @@ class BACU_BloopAnimation_Customizations_Groundhogg {
 
         // Add them to the funnel
         do_action( 'bloopanimation_groundhogg_process_contact', $email );
-
-        //$contact->delete_meta( '_jb_beauty' );
-        //$contact->apply_tag( $tags_to_add );
     }
 
     /**
@@ -155,6 +155,88 @@ class BACU_BloopAnimation_Customizations_Groundhogg {
 
         wp_redirect( get_the_permalink( $product_id ) );
         exit;
+    }
+
+    /**
+     * Redirect to product page
+     * 
+     */
+    function delete_memberpress_pending_purchase( $txn, $old_txn ) {
+
+        // Don't proceed if required class doesn't exist
+        if ( !class_exists( '\Groundhogg\Contact' ) ) {
+            return;
+        }
+
+        if ( trim( $txn->status ) !== 'complete' ) {
+            return;
+        }
+
+        if ( !is_user_logged_in() ) {
+            return;
+        }
+
+        $user_id   = get_current_user_id();
+        $user_info = get_userdata( $user_id );
+        $email     = $user_info->user_email;
+
+        $contact = new \Groundhogg\Contact( [  
+            'email'=> $email,
+        ] );
+
+        $contact->delete_meta( '_bloopanimation_memberpress_pending_purchase' );
+
+        // Remove them from the funnel
+        do_action( 'bloopanimation_groundhogg_cart_recovered', $email );
+    }
+
+    /**
+     * Redirect to product page
+     * 
+     */
+    function tag_user( $txn, $old_txn ) {
+
+        // Don't proceed if required class doesn't exist
+        if ( !class_exists( '\Groundhogg\Contact' ) ) {
+            return;
+        }
+
+        if ( trim( $txn->status ) !== 'complete' ) {
+            return;
+        }
+
+        if ( !is_user_logged_in() ) {
+            return;
+        }
+
+        $user_id   = get_current_user_id();
+        $user_info = get_userdata( $user_id );
+        $email     = $user_info->user_email;
+
+        $contact = new \Groundhogg\Contact( [  
+            'email'=> $email,
+        ] );
+
+        $purchases_so_far = floatval( bloopanimation_get_previous_purchases_value( $user_id ) );
+        $ltv_value        = 250;
+        $ltv_value        = apply_filters( 'bloopanimation-customer-ltv', $ltv_value );
+
+        $tags_to_add = array(
+            'Purchase is Over $'.$ltv_value,
+        );
+
+        if ( $purchases_so_far >= $ltv_value ) {
+            $contact->apply_tag( $tags_to_add );
+        }
+    }
+
+    /**
+     * At this point, the cart has been recovered. 
+     * Stop the funnel
+     * 
+     */
+    function stop_funnel( $email ) {
+        \Groundhogg\do_plugin_api_benchmark( 'bloopanimation_mepr_order_recovered', $email, false );
     }
 }//End of class
 

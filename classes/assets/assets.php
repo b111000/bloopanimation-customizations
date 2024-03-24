@@ -28,7 +28,9 @@ class BACU_BloopAnimation_Customizations_Assets {
      */ 
     function enqueue_scripts_styles() {
         
-        wp_enqueue_script( 'bloopanimation-groundhogg', plugins_url('assets/js/groundhogg.js',  dirname(__DIR__) ), array('jquery'), '1.0.1090', true );
+        if ( !is_user_logged_in() ) {
+            wp_enqueue_script( 'bloopanimation-groundhogg', plugins_url('assets/js/groundhogg.js',  dirname(__DIR__) ), array('jquery'), '1.0.1090', true );
+        }
 
         wp_enqueue_script( 'bloopanimation-main', plugins_url('assets/js/main.js',  dirname(__DIR__) ), array('jquery'), '1.0.090', true );
 
