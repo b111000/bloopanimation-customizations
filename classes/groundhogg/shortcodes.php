@@ -54,7 +54,7 @@ class BACU_BloopAnimation_Customizations_Groundhogg_Shortcodes {
         }
 
         $product_id         = sanitize_text_field( $memberpress_info['memberpress_product_id'] );
-        $featured_image_url = get_the_post_thumbnail_url( $product_id, 'thumbnail' );
+        $featured_image_url = get_the_post_thumbnail_url( $product_id, 'full' );
 
         if ( empty( $featured_image_url ) ) {
             return;
@@ -62,7 +62,7 @@ class BACU_BloopAnimation_Customizations_Groundhogg_Shortcodes {
 
         ob_start();
         ?>
-            <img src="<?php echo esc_url( $featured_image_url ); ?>" alt="<?php esc_html_e( 'Product Image', 'bloopanimation' ); ?>">
+            <img src="<?php echo esc_url( $featured_image_url ); ?>" alt="<?php esc_html_e( 'Product Image', 'bloopanimation' ); ?>" height="150">
         <?php 
 
         return ob_get_clean();

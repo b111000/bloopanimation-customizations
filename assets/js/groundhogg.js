@@ -4,7 +4,7 @@
 	$(document).ready(function(){
 
 	    // Event listener for input changes
-	    $('[name="user_first_name"], [name="user_last_name"], [name="user_email"]').on('input', function() {
+	    $('[name="user_first_name"], [name="user_last_name"], [name="user_email"]').on('change', function() {
 	        
 	        var first_name = $('[name="user_first_name"]').val().trim();
 	        var last_name  = $('[name="user_last_name"]').val().trim();
@@ -16,7 +16,7 @@
 
 	        // Check if first name, last name (optional), and email are not empty and email is valid
 	        if( first_name !== '' && email !== '' && email_regex.test( email ) ) {
-	            
+
 	            // Process Contact
 	            var data = {
 	                'action':     'bloopanimation_groundhogg_process_contact',
@@ -31,7 +31,6 @@
 	                url: bloopanimation_object.ajax_url, 
 	                data: data,
 	                success: function ( data ) {
-	                	console.log( data );
 	                },//success
 	                error: function(XMLHttpRequest, textStatus, errorThrown) { 
 	                },//Error
