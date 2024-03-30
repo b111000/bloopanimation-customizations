@@ -222,12 +222,14 @@ class BACU_BloopAnimation_Customizations_Groundhogg {
         $ltv_value        = apply_filters( 'bloopanimation-customer-ltv', $ltv_value );
 
         $tags_to_add = array(
-            'Sale is Over $'.$ltv_value,
+            'Customer',
         );
 
         if ( $purchases_so_far >= $ltv_value ) {
-            $contact->apply_tag( $tags_to_add );
+            $tags_to_add[] = 'LTV250';
         }
+
+        $contact->apply_tag( $tags_to_add );
     }
 
     /**

@@ -2,6 +2,7 @@
 	'use strict';
 	
 	$(document).ready(function() {
+
 		// Show or hide login form
 		$( 'body' ).on( 'click', '#bloopanimation-login-link', function(e) {
 			e.preventDefault();

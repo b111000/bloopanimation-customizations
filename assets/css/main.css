@@ -1,3 +1,6 @@
+.bloopanimation-header-cart.bloopanimation-needs-top-css-rule {
+	top: 78px;
+}
 .mepr-checkout-container.mp_wrapper .mp-table tr td .desc {
     display: none;
 }
@@ -75,32 +78,27 @@ body .form-wrapper .mp-form-row input[type=password] {
 	box-shadow: none;
 }
 .bloopanimation-header-cart {
-	max-width: 1185px;
-	margin: 0 auto;
-	text-align: right;
-	position: fixed;
-	z-index: 1000;
-	right: 0;
-	width: 100%;
-	left: 0;
+	position: absolute;
+    z-index: 20;
+    right: -27px;
+    top: 19px;
+    display: inline-block;
+	margin-left: 7px;
 }
 .bloopanimation-header-cart a {
-	margin-top: 15px;
-	position: absolute;
-	right: 0;
-	margin-right: 20px;
+	position: relative;
 }
 .bloopanimation-bubble {
 	position: absolute;
-	top: -5px;
-	background: #FF8243;
-	width: 20px;
-	height: 20px;
-	border-radius: 50%;
-	color: #fff;
-	font-size: 13px;
-	text-align: center;
-	right: -8px;
+    top: -8px;
+    background: #FF8243;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 13px;
+    text-align: center;
+    right: -11px;
 }
 .bloopanimation-payment-option,
 .bloopanimation-payment-option:hover,
