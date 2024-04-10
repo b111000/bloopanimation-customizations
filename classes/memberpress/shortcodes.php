@@ -12,7 +12,7 @@ class BACU_BloopAnimation_Customizations_Memberpress_Shortcodes {
      * Show add to cart link or button
      * 
      */ 
-    function add_to_cart_button() {
+    function add_to_cart_button( $atts ) {
 
         if ( !isset( $_SESSION['bloopanimation-in-cart-product-id'] ) ) {
             return '';
@@ -24,7 +24,7 @@ class BACU_BloopAnimation_Customizations_Memberpress_Shortcodes {
         ?>
         <div class="bloopanimation-header-cart">
             <a href="<?php echo get_the_permalink( $product_id ); ?>">
-                <i class="wpmenucart-icon-shopping-cart-0" ></i>
+                <img src="<?php echo esc_url( plugins_url( 'assets/icons/svg/shopping-cart.svg', dirname(__DIR__) ) ); ?>" alt="<?php esc_attr_e( 'Cart icon', 'bloopanimation' ); ?>">
                 <div class="bloopanimation-bubble">1</div>
             </a>
         </div>
