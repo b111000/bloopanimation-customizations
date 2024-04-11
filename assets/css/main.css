@@ -168,6 +168,30 @@ body .form-wrapper .mp-form-row input[type=password] {
 }
 
 /*Shortcode that displays the list of purchases*/
+.bloopanimation-purchases-list-box-header {
+	display: flex;
+    border-bottom: 1px solid #d8d8d8;
+    padding-bottom: 15px;
+}
+.bloopanimation-purchases-list-box {
+	padding: 20px;
+    background: #f5f5f5;
+    margin-bottom: 30px;
+}
+.bloopanimation-left-flex-div {
+	margin-left: auto;
+}
+.bloopanimation-purchases-list-box-body img {
+	max-width: 50px;
+}
+.bloopanimation-purchases-list-box-body {
+	display: flex;
+	padding-top: 15px;
+}
+.bloopanimation-purchases-box-title {
+	margin-left: 10px;
+    margin-top: 10px;
+}
 
 /*
 * Desktop
