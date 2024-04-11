@@ -23,11 +23,16 @@ class BACU_BloopAnimation_Customizations_Assets {
     }
 
     /**
-     * JS
+     * JS/CSS
      * 
      */ 
     function enqueue_scripts_styles() {
-        
+
+        // CSS
+        wp_enqueue_style( 'bloopanimation-cornerstone-tabs', plugins_url('assets/css/cornerstone-tabs.css',  dirname(__DIR__) ), array(), '2.3.4', 'all' );
+
+        // JS
+        wp_enqueue_script( 'bloopanimation-cornerstone-tabs', plugins_url('assets/js/cornerstone-tabs.js',  dirname(__DIR__) ), array('jquery'), '1.0.012x90', true );
         if ( !is_user_logged_in() ) {
             wp_enqueue_script( 'bloopanimation-groundhogg', plugins_url('assets/js/groundhogg.js',  dirname(__DIR__) ), array('jquery'), '1.0.10901gh67', true );
         }
