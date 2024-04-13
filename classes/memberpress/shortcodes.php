@@ -38,80 +38,95 @@ class BACU_BloopAnimation_Customizations_Memberpress_Shortcodes {
      * 
      */ 
     function list_purchases( $atts ) {
+
+        if ( !is_user_logged_in() ) {
+            return __( 'Please login first.', 'bloopanimation' );
+        }
+
         ob_start();
+
         ?>
         <div class="bloopanimation-purchases-list-wrapper">
 
-            <div class="bloopanimation-purchases-list-box">
+            <?php
 
-                <div class="bloopanimation-purchases-list-box-header">
-                    <div>
-                        <strong>
-                            <?php esc_html_e( 'Order #', 'bloopanimation' ); ?>123456789
-                        </strong><br>
-                        <div>
-                            <?php esc_html_e( 'Date', 'bloopanimation' ); ?>:
-                            30th June, 2024
+            global $wpdb;
+
+            $user_id   = get_current_user_id();
+            $purchases = $wpdb->get_results(
+                $wpdb->prepare(
+                    "SELECT * FROM {$wpdb->prefix}mepr_transactions WHERE user_id = %d AND status = 'complete' ORDER BY id DESC",
+                    $user_id
+            ), ARRAY_A );
+
+            ?>
+
+            <?php if ( count( $purchases ) <= 0 ): ?>
+                <h3>
+                    <?php esc_html_e( 'No trasactions yet', 'bloopanimation'); ?>
+                </h3>
+            <?php endif ?>
+
+
+            <?php if ( count( $purchases ) >= 1 ): ?>
+                <?php foreach ( $purchases as $purchase ): ?>
+                    <div class="bloopanimation-purchases-list-box">
+
+                        <?php $product_id = $purchase['product_id']; ?>
+
+                        <div class="bloopanimation-purchases-list-box-header">
+                            <div>
+                                <strong>
+                                    <?php esc_html_e( 'Transaction ID', 'bloopanimation' ); ?>:
+                                    <?php echo esc_html( $purchase['trans_num'] ); ?>
+                                </strong><br>
+                                <div>
+                                    <?php esc_html_e( 'Date', 'bloopanimation' ); ?>:
+                                    <?php echo esc_html( date_i18n('F, jS, Y', strtotime( $purchase['created_at'] )) ); ?>
+                                </div>
+                                <div>
+                                    <?php esc_html_e( 'Total', 'bloopanimation' ); ?>:
+                                    $<?php echo esc_html( $purchase['total'] ); ?>
+                                </div>
+                            </div>
+                            <div class="bloopanimation-left-flex-div">
+                                <a href="
+                                <?php
+                                    echo MeprUtils::admin_url(
+                                        'admin-ajax.php',
+                                        array( 'download_invoice', 'mepr_invoices_nonce' ),
+                                        array(
+                                            'action' => 'mepr_download_invoice',
+                                            'txn'    => $purchase['id'],
+                                        )
+                                    );
+                                ?>
+                                "
+                                class="button"
+                                target="_blank"
+                                >
+                                    <?php esc_html_e( 'Download Invoice', 'bloopanimation' ); ?>
+                                </a>
+                            </div>
                         </div>
-                        <div>
-                            <?php esc_html_e( 'Total', 'bloopanimation' ); ?>:
-                            $35.37
+
+                        <div class="bloopanimation-purchases-list-box-body">
+                            <?php if ( has_post_thumbnail( $product_id ) ): ?>
+                                <div>
+                                    <?php echo wp_kses_post( get_the_post_thumbnail( $product_id, 'thumbnail' ) ); ?>
+                                </div>
+                            <?php endif ?>
+                            <div class="bloopanimation-purchases-box-title">
+                                <strong>
+                                    <?php echo esc_html( get_the_title( $product_id ) ); ?>
+                                </strong>
+                            </div>
                         </div>
-                    </div>
-                    <div class="bloopanimation-left-flex-div">
-                        <a href="" class="button">
-                            <?php esc_html_e( 'Download Invoice', 'bloopanimation' ); ?>
-                        </a>
-                    </div>
-                </div>
 
-                <div class="bloopanimation-purchases-list-box-body">
-                    <div>
-                        <?php echo wp_kses_post( get_the_post_thumbnail( 11, 'medium' ) ); ?>
                     </div>
-                    <div class="bloopanimation-purchases-box-title">
-                        <strong>
-                            <?php echo esc_html( get_the_title( 11 ) ); ?>
-                        </strong>
-                    </div>
-                </div>
+                <?php endforeach ?>
+            <?php endif ?>
 
-            </div>
-            <div class="bloopanimation-purchases-list-box">
-
-                <div class="bloopanimation-purchases-list-box-header">
-                    <div>
-                        <strong>
-                            <?php esc_html_e( 'Order #', 'bloopanimation' ); ?>123456789
-                        </strong><br>
-                        <div>
-                            <?php esc_html_e( 'Date', 'bloopanimation' ); ?>:
-                            30th June, 2024
-                        </div>
-                        <div>
-                            <?php esc_html_e( 'Total', 'bloopanimation' ); ?>:
-                            $35.37
-                        </div>
-                    </div>
-                    <div class="bloopanimation-left-flex-div">
-                        <a href="" class="button">
-                            <?php esc_html_e( 'Download Invoice', 'bloopanimation' ); ?>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="bloopanimation-purchases-list-box-body">
-                    <div>
-                        <?php echo wp_kses_post( get_the_post_thumbnail( 11, 'medium' ) ); ?>
-                    </div>
-                    <div class="bloopanimation-purchases-box-title">
-                        <strong>
-                            <?php echo esc_html( get_the_title( 11 ) ); ?>
-                        </strong>
-                    </div>
-                </div>
-
-            </div>
 
         </div>
         <?php

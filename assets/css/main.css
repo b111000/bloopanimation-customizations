@@ -163,13 +163,9 @@ body .form-wrapper .mp-form-row input[type=password] {
 	0% { transform: rotate(0deg); }
 	100% { transform: rotate(360deg); }
 }
-.bloopanimation-hide-my-course-element .x-bar-container .e115109-e11 {
-	display: none;
-}
 
 /*Shortcode that displays the list of purchases*/
 .bloopanimation-purchases-list-box-header {
-	display: flex;
     border-bottom: 1px solid #d8d8d8;
     padding-bottom: 15px;
 }
@@ -203,6 +199,9 @@ body .form-wrapper .mp-form-row input[type=password] {
 	.single-memberpressproduct .site-branding__logo {
 		display: none;
 	}
+	.bloopanimation-purchases-list-box-header {
+		display: flex;
+	}
 }
 
 /*
@@ -219,5 +218,8 @@ body .form-wrapper .mp-form-row input[type=password] {
 	}
 	.bloopanimation-payment-option {
 		display: block;
+	}
+	.bloopanimation-left-flex-div {
+	    margin-top: 10px;
 	}
 }

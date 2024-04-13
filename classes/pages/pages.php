@@ -13,11 +13,24 @@ class BACU_BloopAnimation_Customizations_Pages {
      */ 
     function hide_my_course_element( $classes ) {
 
-        if ( get_post_type() != 'page' ) {
+        global $post;
+
+        if ( $post == null || !isset( $post->ID ) ) {
             return $classes;
         }
 
-        $current_post = get_the_ID();
+        $post_id = $post->ID;
+
+        if ( get_post_type( $post_id ) != 'page' ) {
+            return $classes;
+        }
+
+        // Don't do this on archives
+        if( in_array( 'archive', $classes ) || in_array( 'category', $classes )  ) {
+            return $classes;
+        }
+
+        $current_post = $post_id;
 
         global $wpdb;
         $post_id = $wpdb->get_var(
@@ -37,7 +50,7 @@ class BACU_BloopAnimation_Customizations_Pages {
             return $classes;
         }
 
-        $classes[] = 'bloopanimation-hide-my-course-element';
+        $classes[] = 'bloopanimation-page-is-in-course-category';
 
         return $classes;
     }
