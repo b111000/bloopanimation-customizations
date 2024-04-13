@@ -188,6 +188,17 @@ body .form-wrapper .mp-form-row input[type=password] {
 	margin-left: 10px;
     margin-top: 10px;
 }
+.bloopanimation-purchases-list-box-header .button {
+	background-color: #fff;
+	border-color: #ccc;
+	color: inherit;
+	text-shadow: none;
+}
+.bloopanimation-purchases-list-box-header .button:hover,
+.bloopanimation-purchases-list-box-header .button:focus,
+.bloopanimation-purchases-list-box-header .button:active {
+	background-color: #e2e2e2;
+}
 
 /*
 * Desktop

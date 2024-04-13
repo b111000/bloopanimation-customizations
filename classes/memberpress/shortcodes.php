@@ -1,4 +1,7 @@
 <?php 
+
+use function Groundhogg\get_contactdata;
+
 class BACU_BloopAnimation_Customizations_Memberpress_Shortcodes {
     /**
      * Constructor
@@ -7,6 +10,7 @@ class BACU_BloopAnimation_Customizations_Memberpress_Shortcodes {
     public function __construct() {
         add_shortcode( 'bloopanimation_header_cart', array( $this, 'add_to_cart_button' ), 10, 1 );
         add_shortcode( 'bloopanimation_list_purchases', array( $this, 'list_purchases' ), 10, 1 );
+        add_shortcode( 'bloopanimation_mepr_percent_discount', array( $this, 'generates_percent_discount' ), 10, 1 );
     }
 
     /**
@@ -76,17 +80,14 @@ class BACU_BloopAnimation_Customizations_Memberpress_Shortcodes {
 
                         <div class="bloopanimation-purchases-list-box-header">
                             <div>
-                                <strong>
+                                <span>
                                     <?php esc_html_e( 'Transaction ID', 'bloopanimation' ); ?>:
                                     <?php echo esc_html( $purchase['trans_num'] ); ?>
-                                </strong><br>
+                                </span><br>
                                 <div>
-                                    <?php esc_html_e( 'Date', 'bloopanimation' ); ?>:
                                     <?php echo esc_html( date_i18n('F, jS, Y', strtotime( $purchase['created_at'] )) ); ?>
-                                </div>
-                                <div>
-                                    <?php esc_html_e( 'Total', 'bloopanimation' ); ?>:
-                                    $<?php echo esc_html( $purchase['total'] ); ?>
+                                    |
+                                    <?php esc_html_e( 'Total', 'bloopanimation' ); ?>: $<?php echo esc_html( $purchase['total'] ); ?>
                                 </div>
                             </div>
                             <div class="bloopanimation-left-flex-div">
@@ -131,6 +132,64 @@ class BACU_BloopAnimation_Customizations_Memberpress_Shortcodes {
         </div>
         <?php
         return ob_get_clean();
+    }
+
+    /**
+     * Generates a percentage discount coupon in MemberPress for a specified email address.
+     *
+     * This function creates a new percentage discount coupon in MemberPress and associates it with
+     * a specific email address and optionally valid products.
+     *
+     * @param array $atts Shortcode attributes.
+     *                   - email (string)      : The email address of the contact to apply the discount for.
+     *                   - valid_products (string) : Comma-separated list of product IDs to restrict the coupon to (optional).
+     * @return string|null The generated coupon code, or null if coupon creation fails or prerequisites are not met.
+     */
+    function generates_percent_discount( $atts ) {
+
+        if ( !class_exists( 'MeprCoupon' ) ) {
+            return;
+        }
+
+        if ( !function_exists( 'Groundhogg\get_contactdata' ) ) {
+            return;
+        }
+
+        $args = [];
+        $args = shortcode_atts( 
+            array(
+                'email'          => '',
+                'valid_products' => '',
+            ), 
+            $atts
+        );
+
+        $contact = get_contactdata( $args['email'] );
+
+        if ( !$contact ) {
+            return;
+        }
+
+        // Don't generate coupons when updating/creating emails
+        if ( strpos( $_SERVER['REQUEST_URI'], '/wp-json/gh/' ) == true ) {
+            return;
+        }
+
+        $valid_products = [];
+        if ( !empty( $args['valid_products'] ) ) {
+            $valid_products = explode( ',', $args['valid_products'] );
+        }
+
+        $coupon_code             = strtoupper( bin2hex(openssl_random_pseudo_bytes(5)) );
+        $coupon                  = new MeprCoupon();
+        $coupon->post_title      = sanitize_text_field( $coupon_code );
+        $coupon->discount_type   = 'percent';
+        $coupon->discount_amount = 100;
+        $coupon->usage_amount    = 1;
+        $coupon->valid_products  = $valid_products;
+        $coupon->save();
+
+        return $coupon_code;
     }
 }//End of class
 
