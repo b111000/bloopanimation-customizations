@@ -19,11 +19,11 @@ class BACU_BloopAnimation_Customizations_Memberpress_Shortcodes {
      */ 
     function add_to_cart_button( $atts ) {
 
-        if ( !isset( $_SESSION['bloopanimation-in-cart-product-id'] ) ) {
+        if ( !isset( $_COOKIE['bloopanimation-product-in-the-cart'] ) ) {
             return '';
         }
 
-        $product_id = $_SESSION['bloopanimation-in-cart-product-id'];
+        $product_id = $_COOKIE['bloopanimation-product-in-the-cart'];
 
         ob_start();
         ?>

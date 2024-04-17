@@ -17,7 +17,7 @@ class BACU_BloopAnimation_Customizations_Memberpress_Checkout {
         add_action( 'wp_print_styles', array( $this, 'header_css_styles' ) );
         add_action( 'template_redirect', array( $this, 'set_memberpress_coupon' ) );
         add_action( 'mepr-checkout-after-email-field', array( $this, 'login_link' ) );
-        add_action( 'template_redirect', array( $this, 'set_in_cart_product_id' ) );
+        add_action( 'template_redirect', array( $this, 'set_product_in_the_cart' ) );
 
         add_action( 'wp_ajax_nopriv_bloopanimation_login', array( $this, 'login' ) );
         add_action( 'wp_ajax_bloopanimation_login', array( $this, 'login' ) );
@@ -371,7 +371,7 @@ class BACU_BloopAnimation_Customizations_Memberpress_Checkout {
      * Set in cart product id to be used to generate the "add to cart" link
      * 
      */ 
-    function set_in_cart_product_id() {
+    function set_product_in_the_cart() {
 
         if ( is_admin() ) {
             return;
@@ -389,13 +389,8 @@ class BACU_BloopAnimation_Customizations_Memberpress_Checkout {
             return;
         }
 
-        // Start the session
-        if ( session_status() == PHP_SESSION_NONE ) {
-            session_start();
-        }
-
         // Set product id
-        $_SESSION['bloopanimation-in-cart-product-id'] = $post_id;
+        setcookie( 'bloopanimation-product-in-the-cart', $post_id, strtotime( '+1 year' ) );
     }
 
     /**

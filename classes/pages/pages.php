@@ -5,13 +5,18 @@ class BACU_BloopAnimation_Customizations_Pages {
      *
      */
     public function __construct() {
-        add_action( 'body_class', array( $this, 'hide_my_course_element' ), 10, 1 );
+        add_action( 'body_class', array( $this, 'page_is_in_course_category' ), 10, 1 );
     }
 
     /**
-     * Hide my course element
-     */ 
-    function hide_my_course_element( $classes ) {
+     * Checks if the current page is in the course category.
+     *
+     * This function checks if the current WordPress page belongs to the 'course' category.
+     *
+     * @param array $classes An array of CSS classes for the body tag.
+     * @return array The modified array of CSS classes.
+     */
+    function page_is_in_course_category( $classes ) {
 
         global $post;
 

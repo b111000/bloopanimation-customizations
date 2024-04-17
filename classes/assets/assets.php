@@ -17,7 +17,7 @@ class BACU_BloopAnimation_Customizations_Assets {
     public static function css_styles() {
         ob_start();
         ?>
-            <link rel='stylesheet' id='bloopanimation-main' href='<?php echo esc_url( plugins_url( 'assets/css/main.css', dirname(__DIR__) ) ); ?>?ver=1.0.0.11121' type='text/css' media='all' />
+            <link rel='stylesheet' id='bloopanimation-main' href='<?php echo esc_url( plugins_url( 'assets/css/main.css', dirname(__DIR__) ) ); ?>?ver=1.0.0.11xc23-8121' type='text/css' media='all' />
         <?php
         echo trim( ob_get_clean() );
     }
