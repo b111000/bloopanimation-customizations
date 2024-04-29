@@ -8,7 +8,7 @@ class BACU_BloopAnimation_Customizations_Memberpress_Shortcodes {
      *
      */
     public function __construct() {
-        add_shortcode( 'bloopanimation_header_cart', array( $this, 'add_to_cart_button' ), 10, 1 );
+        add_shortcode( 'bloopanimation_header_cart', array( $this, 'header_cart' ), 10, 1 );
         add_shortcode( 'bloopanimation_list_purchases', array( $this, 'list_purchases' ), 10, 1 );
         add_shortcode( 'bloopanimation_mepr_percent_discount', array( $this, 'generates_percent_discount' ), 10, 1 );
     }
@@ -17,18 +17,11 @@ class BACU_BloopAnimation_Customizations_Memberpress_Shortcodes {
      * Show add to cart link or button
      * 
      */ 
-    function add_to_cart_button( $atts ) {
-
-        if ( !isset( $_COOKIE['bloopanimation-product-in-the-cart'] ) ) {
-            return '';
-        }
-
-        $product_id = $_COOKIE['bloopanimation-product-in-the-cart'];
-
+    function header_cart( $atts ) {
         ob_start();
         ?>
-        <div class="bloopanimation-header-cart">
-            <a href="<?php echo get_the_permalink( $product_id ); ?>">
+        <div class="bloopanimation-header-cart bloopanimation-hide">
+            <a href="#">
                 <img src="<?php echo esc_url( plugins_url( 'assets/icons/svg/shopping-cart.svg', dirname(__DIR__) ) ); ?>" alt="<?php esc_attr_e( 'Cart icon', 'bloopanimation' ); ?>">
                 <div class="bloopanimation-bubble">1</div>
             </a>

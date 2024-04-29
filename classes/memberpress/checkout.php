@@ -17,7 +17,6 @@ class BACU_BloopAnimation_Customizations_Memberpress_Checkout {
         add_action( 'wp_print_styles', array( $this, 'header_css_styles' ) );
         add_action( 'template_redirect', array( $this, 'set_memberpress_coupon' ) );
         add_action( 'mepr-checkout-after-email-field', array( $this, 'login_link' ) );
-        add_action( 'template_redirect', array( $this, 'set_product_in_the_cart' ) );
 
         add_action( 'wp_ajax_nopriv_bloopanimation_login', array( $this, 'login' ) );
         add_action( 'wp_ajax_bloopanimation_login', array( $this, 'login' ) );
@@ -203,6 +202,12 @@ class BACU_BloopAnimation_Customizations_Memberpress_Checkout {
             $post_id = sanitize_text_field( $_POST['mepr_product_id'] );
         }
 
+        $post_title      = get_the_title( $post_id );
+
+        if ( $post_title != 'All-Access Pass' ) {
+            return $discount_amount;
+        }
+
         $product         = new MeprProduct( $post_id );
         $price           = $product->price;
         $user_id         = get_current_user_id();
@@ -265,7 +270,7 @@ class BACU_BloopAnimation_Customizations_Memberpress_Checkout {
 
         ?>
         <style type="text/css">
-            <?php if ( $post_title == 'All-Access Pass' ): ?>
+            <?php if ( $post_title == 'All-Access Pass (Payments)' ): ?>
                 .mepr-checkout-container .have-coupon-link {
                     display: none;
                 }
@@ -365,32 +370,6 @@ class BACU_BloopAnimation_Customizations_Memberpress_Checkout {
             </div>
         </div>
         <?php
-    }
-
-    /**
-     * Set in cart product id to be used to generate the "add to cart" link
-     * 
-     */ 
-    function set_product_in_the_cart() {
-
-        if ( is_admin() ) {
-            return;
-        }
-
-        global $post;
-
-        if ( $post == null || !isset( $post->ID ) ) {
-            return;
-        }
-
-        $post_id = $post->ID;
-
-        if ( get_post_type( $post_id ) != 'memberpressproduct' ) {
-            return;
-        }
-
-        // Set product id
-        setcookie( 'bloopanimation-product-in-the-cart', $post_id, strtotime( '+1 year' ) );
     }
 
     /**

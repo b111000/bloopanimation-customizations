@@ -2,23 +2,26 @@
 	'use strict';
 
     $(document).ready(function() {
-        /**
-         * This section handles the functionality of the dropdown menu specifically for mobile devices.
-         * It ensures that when an item in the dropdown is clicked, it moves to the top of the list and closes the dropdown.
-         * Additionally, it opens the dropdown when the first item is clicked, and closes it when clicking outside the dropdown.
-         */
-        
+        // Initialize and set active elements
+        $.each( $('.x-tabs .x-tabs-list ul li:first-child'), function() {
+            $(this).addClass('bloopanimation-active'); 
+        });
+
         // Set current element, close dropdown
-        $('body').on('click', '.e137608-e4 .x-tabs-list ul li:not(:first-child)', function(e) {
+        $('body').on('click', '.e137608-e4 .x-tabs-list ul li:not(.bloopanimation-active)', function(e) {
             if ($(window).width() > 767) {
                 return;
             }
-            $(this).prependTo('.e137608-e4 .x-tabs-list ul');
             $(this).closest('.x-tabs-list').removeClass('bloopanimation-ul-open');
+
+            $.each($(this).closest('.x-tabs-list').find('li'), function() {
+                $(this).removeClass('bloopanimation-active');
+            });
+            $(this).addClass('bloopanimation-active');
         });
 
         // Open dropdown
-        $('body').on('click', '.e137608-e4 .x-tabs-list ul li:first-child', function(e) {
+        $('body').on('click', '.e137608-e4 .x-tabs-list ul li.bloopanimation-active', function(e) {
             if ($(window).width() > 767) {
                 return;
             }

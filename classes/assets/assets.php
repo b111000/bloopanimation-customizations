@@ -17,7 +17,7 @@ class BACU_BloopAnimation_Customizations_Assets {
     public static function css_styles() {
         ob_start();
         ?>
-            <link rel='stylesheet' id='bloopanimation-main' href='<?php echo esc_url( plugins_url( 'assets/css/main.css', dirname(__DIR__) ) ); ?>?ver=1.0.0.11xc23-8121' type='text/css' media='all' />
+            <link rel='stylesheet' id='bloopanimation-main' href='<?php echo esc_url( plugins_url( 'assets/css/main.css', dirname(__DIR__) ) ); ?>?ver=1.0.0.11-9xx-8121' type='text/css' media='all' />
         <?php
         echo trim( ob_get_clean() );
     }
@@ -29,13 +29,17 @@ class BACU_BloopAnimation_Customizations_Assets {
     function enqueue_scripts_styles() {
 
         // CSS
-        wp_enqueue_style( 'bloopanimation-cornerstone-tabs', plugins_url('assets/css/cornerstone-tabs.css',  dirname(__DIR__) ), array(), '2.3.4', 'all' );
+        wp_enqueue_style( 'bloopanimation-cornerstone-tabs', plugins_url('assets/css/cornerstone-tabs.css',  dirname(__DIR__) ), array(), '1.0.0-xsd', 'all' );
 
         // JS
-        wp_enqueue_script( 'bloopanimation-cornerstone-tabs', plugins_url('assets/js/cornerstone-tabs.js',  dirname(__DIR__) ), array('jquery'), '1.0.012x90', true );
+        wp_enqueue_script( 'js-cookie', plugins_url('assets/js/js.cookie.min.js',  dirname(__DIR__) ), array('jquery'), '3.0.5', true );
+
+        wp_enqueue_script( 'bloopanimation-cornerstone-tabs', plugins_url('assets/js/cornerstone-tabs.js',  dirname(__DIR__) ), array('jquery'), '1.0.01-9-2x90', true );
         if ( !is_user_logged_in() ) {
             wp_enqueue_script( 'bloopanimation-groundhogg', plugins_url('assets/js/groundhogg.js',  dirname(__DIR__) ), array('jquery'), '1.0.10901gh67', true );
         }
+
+        wp_enqueue_script( 'bloopanimation-memberpress-cart', plugins_url('assets/js/memberpress-cart.js',  dirname(__DIR__) ), array('jquery'), '1.0.0', true );
 
         wp_enqueue_script( 'bloopanimation-main', plugins_url('assets/js/main.js',  dirname(__DIR__) ), array('jquery'), '1.0.012x90', true );
 
