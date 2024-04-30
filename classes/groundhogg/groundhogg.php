@@ -21,6 +21,10 @@ class BACU_BloopAnimation_Customizations_Groundhogg {
      */ 
     function save_memberpress_pending_purchase( $email, $product_id, $first_name='', $last_name='' ) {
 
+        if ( !class_exists( '\Groundhogg\Contact' ) ) {
+            return;
+        }
+
         // This will retrieve any existing contact or maken a new one
         $contact = new \Groundhogg\Contact( [
             'first_name' => $first_name, 
