@@ -393,36 +393,38 @@ class BACU_BloopAnimation_Customizations_Memberpress_Checkout {
         }
 
         ob_start();
+
+        $args                = [];
+        $products            = [];
+        $related_product_ids = array(-1);
+
+        $related_products    = get_post_meta( $post_id, 'bloopanimation-mepr-related-products', true );
+        if ( !empty( $related_products ) ) {
+            $related_product_ids = explode( PHP_EOL, $related_products );
+        }
+        if ( is_array( $related_product_ids ) ) {
+            $args['post__in'] = $related_product_ids;
+        }
+
+        $args = array(
+            'orderby'      => 'relevance',
+            'fields'       => 'ids',
+            'post_status'  => 'publish',
+            'post_type'    => array( 'memberpressproduct' ),
+            'post__not_in' => array( $post_id ),
+            'post__in'     => $related_product_ids,
+        ); 
+
+        $products = get_posts( $args );
+
+        if ( count( $products ) <= 0 ) {
+            return $content;
+        }
+
+        array_unshift( $products, $post_id );
+
         ?>
         <div class="bloopanimation-payment-options-wrapper">
-
-            <?php
-
-                $args                = [];
-                $products            = [];
-                $related_product_ids = [];
-
-                $related_products    = get_post_meta( $post_id, 'bloopanimation-mepr-related-products', true );
-                if ( !empty( $related_products ) ) {
-                    $related_product_ids = explode( PHP_EOL, $related_products );
-                }
-                if ( is_array( $related_product_ids ) ) {
-                    $args['post__in'] = $related_product_ids;
-                }
-
-                $args = array(
-                    'orderby'      => 'relevance',
-                    'fields'       => 'ids',
-                    'post_status'  => 'publish',
-                    'post_type'    => array( 'memberpressproduct' ),
-                    'post__not_in' => array( $post_id ),
-                    'post__in'     => $related_product_ids,
-                ); 
-
-                $products = get_posts( $args );
-                array_unshift( $products, $post_id );
-                
-            ?>
 
             <?php if ( count( $products ) >= 1 ): ?>
                 <?php foreach ( $products as $product_id ): ?>
