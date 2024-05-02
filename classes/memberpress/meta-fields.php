@@ -22,6 +22,14 @@ class BACU_BloopAnimation_Customizations_Memberpress_Meta_Fields {
             'normal',
             'high',
         );
+        add_meta_box(
+            'bloopanimation-checkout-page-related-products',
+            __( 'Related Products', 'bloopanimation' ),
+            array( $this, 'related_products'),
+            ['memberpressproduct'],
+            'normal',
+            'high',
+        );
     }
 
     /**
@@ -54,11 +62,35 @@ class BACU_BloopAnimation_Customizations_Memberpress_Meta_Fields {
     }
 
     /**
+     * Metabox HTML
+     *
+     */
+    function related_products() {
+
+        $post_id          = get_the_ID();
+        $related_products = get_post_meta( $post_id, 'bloopanimation-mepr-related-products', true );
+
+        ?>
+        <textarea cols="27" rows="7" placeholder="Please enter 1 product ID per line" name="bloopanimation-mepr-related-products"><?php echo esc_html( $related_products ); ?></textarea>
+        <?php 
+        
+    }
+
+    /**
      * Save post meta
      *
      */
     function save_post_meta( $post_id, $post, $update ) {
-        update_post_meta( $post_id, 'bloopanimation-mepr-checkout-txt', wp_kses_post( $_POST['bloopanimation-mepr-checkout-txt'] ) );
+        update_post_meta( 
+            $post_id, 
+            'bloopanimation-mepr-checkout-txt', 
+            wp_kses_post( $_POST['bloopanimation-mepr-checkout-txt'] ) 
+        );
+        update_post_meta(
+            $post_id, 
+            'bloopanimation-mepr-related-products', 
+            wp_kses_post( $_POST['bloopanimation-mepr-related-products'] )
+        );
     }
 }//End of class
 

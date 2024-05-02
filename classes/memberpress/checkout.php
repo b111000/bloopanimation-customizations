@@ -392,29 +392,36 @@ class BACU_BloopAnimation_Customizations_Memberpress_Checkout {
             $post_id = $post->ID;
         }
 
-        if ( get_the_title( $post_id ) != 'All-Access Pass' && get_the_title( $post_id ) != 'All-Access Pass (Payments)' ) {
-            return $content;
-        }
-
         ob_start();
         ?>
         <div class="bloopanimation-payment-options-wrapper">
 
             <?php
 
-                $products = [];
+                $args                = [];
+                $products            = [];
+                $related_product_ids = [];
+
+                $related_products    = get_post_meta( $post_id, 'bloopanimation-mepr-related-products', true );
+                if ( !empty( $related_products ) ) {
+                    $related_product_ids = explode( PHP_EOL, $related_products );
+                }
+                if ( is_array( $related_product_ids ) ) {
+                    $args['post__in'] = $related_product_ids;
+                }
+
                 $args = array(
-                    's'              => 'All-Access Pass',
-                    'orderby'        => 'relevance',
-                    'fields'         => 'ids',
-                    'post_status'    => 'publish',
-                    'post_type'      => array( 'memberpressproduct' ),
-                    'posts_per_page' => 1,
-                    'post__not_in'   => array( $post_id ),
+                    'orderby'      => 'relevance',
+                    'fields'       => 'ids',
+                    'post_status'  => 'publish',
+                    'post_type'    => array( 'memberpressproduct' ),
+                    'post__not_in' => array( $post_id ),
+                    'post__in'     => $related_product_ids,
                 ); 
 
                 $products = get_posts( $args );
                 array_unshift( $products, $post_id );
+                
             ?>
 
             <?php if ( count( $products ) >= 1 ): ?>

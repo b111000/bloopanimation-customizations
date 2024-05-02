@@ -24,5 +24,7 @@
         var product_url  = window.location.href;
         var expire_after = 365;
         Cookies.set( 'bloopanimation-product-in-the-cart-url', product_url, { expires: expire_after } );
+
+        $('.x-masthead .x-bar-container.e115109-e10').css('margin-right', '40px');
 	});
 })(jQuery)

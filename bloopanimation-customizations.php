@@ -3,7 +3,7 @@
  * Plugin Name: Bloopanimation - Customizations
  * Description: [When people purchase a certain Memberpress membership, the price is discounted by all previous purchases]
  * Author: William
- * Version: 1.0.0.4.7
+ * Version: 1.0.0.4.8
  * Author URI: https://app.codeable.io/tasks/new?preferredContractor=77368
  * Text Domain: bloopanimation
  * Domain Path: /languages

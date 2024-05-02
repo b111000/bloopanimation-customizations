@@ -29,12 +29,12 @@ class BACU_BloopAnimation_Customizations_Assets {
     function enqueue_scripts_styles() {
 
         // CSS
-        wp_enqueue_style( 'bloopanimation-cornerstone-tabs', plugins_url('assets/css/cornerstone-tabs.css',  dirname(__DIR__) ), array(), '1.0.0-xsd', 'all' );
+        wp_enqueue_style( 'bloopanimation-cornerstone-tabs', plugins_url('assets/css/cornerstone-tabs.css',  dirname(__DIR__) ), array(), '1.0.01190-890xsd', 'all' );
 
         // JS
         wp_enqueue_script( 'js-cookie', plugins_url('assets/js/js.cookie.min.js',  dirname(__DIR__) ), array('jquery'), '3.0.5', true );
 
-        wp_enqueue_script( 'bloopanimation-cornerstone-tabs', plugins_url('assets/js/cornerstone-tabs.js',  dirname(__DIR__) ), array('jquery'), '1.0.01-9-2x90', true );
+        wp_enqueue_script( 'bloopanimation-cornerstone-tabs', plugins_url('assets/js/cornerstone-tabs.js',  dirname(__DIR__) ), array('jquery'), '1.0.1092m78x90', true );
         if ( !is_user_logged_in() ) {
             wp_enqueue_script( 'bloopanimation-groundhogg', plugins_url('assets/js/groundhogg.js',  dirname(__DIR__) ), array('jquery'), '1.0.10901gh67', true );
         }
